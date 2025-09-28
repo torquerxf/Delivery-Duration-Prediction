@@ -8,7 +8,7 @@ This project demonstrates an end-to-end machine learning pipeline to predict Doo
 
 - __Objective:__ Predict actual delivery duration (in seconds) given order, restaurant, and delivery partner features.
 
-- __Dataset:__ DoorDash Delivery Dataset (~100K+ rows, multiple categorical & numerical features).
+- __Dataset:__ DoorDash Delivery Dataset (~100K+ rows, multiple categorical & numerical features). [Link-🔗](https://platform.stratascratch.com/data-projects/delivery-duration-prediction)
 
 - __Challenges:__
 
