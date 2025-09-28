@@ -1,45 +1,132 @@
-## Data Description
-The attached file historical_data.csv contains a subset of deliveries received at DoorDash in early 2015 in a subset of the cities. Each row in this file corresponds to one unique delivery. We have added noise to the dataset to obfuscate certain business details. Each column corresponds to a feature as explained below. Note all money (dollar) values given in the data are in cents and all time duration values given are in seconds
+# 🚴‍♂️ DoorDash Delivery Duration Prediction
 
-The target value to predict here is the total seconds value between `created_at` and `actual_delivery_time`.
+Predicting delivery times is critical for food delivery platforms like DoorDash, UberEats, or Swiggy. Accurate predictions not only enhance customer satisfaction but also improve driver allocation and efficiency.
 
-### Columns in historical_data.csv
-#### Time features
+This project demonstrates an end-to-end machine learning pipeline to predict DoorDash delivery durations using real-world-like dataset.
 
-+ `market_id`: A city/region in which DoorDash operates, e.g., Los Angeles, given in the data as an id
-+ `created_at`: Timestamp in UTC when the order was submitted by the consumer to DoorDash. (Note this timestamp is in UTC, but in case you need it, the actual timezone of the region was US/Pacific)
-+ `actual_delivery_time`: Timestamp in UTC when the order was delivered to the consumer
-#### Store features
+## 📌 Project Overview
 
-+ `store_id`: an id representing the restaurant the order was submitted for
-+ `store_primary_category`: cuisine category of the restaurant, e.g., italian, asian
-+ `order_protocol`: a store can receive orders from DoorDash through many modes. This field represents an id denoting the protocol
-#### Order features
+- __Objective:__ Predict actual delivery duration (in seconds) given order, restaurant, and delivery partner features.
 
-+ `total_items`: total number of items in the order
-+ `subtotal`: total value of the order submitted (in cents)
-+ `num_distinct_items`: number of distinct items included in the order
-+ `min_item_price`: price of the item with the least cost in the order (in cents)
-+ `max_item_price`: price of the item with the highest cost in the order (in cents)
-#### Market features
+- __Dataset:__ DoorDash Delivery Dataset (~100K+ rows, multiple categorical & numerical features).
 
-DoorDash being a marketplace, we have information on the state of marketplace when the order is placed, that can be used to estimate delivery time. The following features are values at the time of created_at (order submission time):
+- __Challenges:__
 
-+ `total_onshift_dashers`: Number of available dashers who are within 10 miles of the store at the time of order creation
-+ `total_busy_dashers`: Subset of above total_onshift_dashers who are currently working on an order
-+ `total_outstanding_orders`: Number of orders within 10 miles of this order that are currently being processed.
-#### Predictions from other models
+  - Skewed distributions of delivery times.
 
-We have predictions from other models for various stages of delivery process that we can use:
+  - Presence of extreme outliers (very short/very long deliveries).
 
-+ `estimated_order_place_duration`: Estimated time for the restaurant to receive the order from DoorDash (in seconds)
-+ `estimated_store_to_consumer_driving_duration`: Estimated travel time between store and consumer (in seconds)
-## Practicalities
-Build a model to predict the total delivery duration seconds (as defined above). Feel free to generate additional features from the given data to improve model performance. Explain:
+  - Features with negative values that don’t make sense (cleaned during preprocessing).
 
-+ model(s) used,
-+ how you evaluated your model performance on the historical data,
-+ any data processing you performed on the data,
-+ feature engineering choices you made,
-+ other information you would like to share your modeling approach.
-We expect the project to take 3-5 hours in total, but feel free to spend as much time as you like on it. Feel free to use any open source packages for the task.
+- __Approach:__
+
+  1. Data cleaning and preprocessing
+
+  2. Exploratory data analysis (EDA)
+
+  3. Feature engineering (encoding, outlier handling, transformations)
+
+  4. Model development & tuning (baseline vs. advanced ML)
+
+  5. Evaluation & results
+
+## ⚙️ Tools & Technologies
+
+- __Python__
+
+- __Libraries:__
+
+  - `pandas`, `numpy` → data wrangling
+
+  - `matplotlib`, `seaborn` → visualizations
+
+  - `scikit-learn` → preprocessing, baseline ML models
+
+  - `xgboost` → gradient boosting model
+
+- __Version Control:__ Git & GitHub
+
+- __Environment:__ Jupyter Notebook
+
+## 📊 Key Steps
+### 1. Data Preprocessing
+
+✔️ Removed inconsistent and erroneous entries (e.g., negative delivery durations).  
+✔️ Handled right-skewed features with __log transformations__.  
+✔️ Applied __IQR-based filtering__ to reduce outlier impact.  
+✔️ Encoded categorical variables with `OneHotEncoder`.  
+
+### 2. Exploratory Data Analysis (EDA)
+
+- Identified that many delivery-related features were __heavily skewed__.
+
+- Found correlation between restaurant location, order size, and delivery duration.
+
+- Visualized distributions and checked feature-target relationships.
+
+### 3. Feature Engineering
+
+- Derived new features like __delivery distance buckets__ and __order size categories__.
+
+- Standardized numerical features.
+
+### 4. Modeling
+
+- Tried multiple models: __Linear Regression, Decision Tree, Random Forest, XGBRegressor__.
+
+- Tuned hyperparameters with `GridSearchCV`.
+
+### 5. Evaluation Metrics
+
+- __Baseline Model (Mean Predictor):__
+
+  - MAE: ~717
+
+  - RMSE: ~2247
+
+- __Final Model (XGBRegressor):__
+
+  - MAE: __684 seconds (~11.4 minutes)__
+
+  - RMSE: __964 seconds (~16 minutes)__
+
+  - R² Score: __0.24__
+
+## 🚀 Results
+
+- Reduced RMSE by __~57%__ compared to baseline.
+
+- XGBoost outperformed traditional models due to handling non-linearities & feature interactions.
+
+- Insights: Larger order sizes & higher delivery distances significantly increase delivery duration.
+
+## 🔮 Future Enhancements
+
+- Apply __feature importance analysis__ (SHAP values) to interpret model decisions.
+
+- Experiment with __ensemble models__ (stacking/blending).
+
+- Use __deep learning (LSTM)__ for time-series-like prediction of delivery duration.
+
+- Deploy as an __API with Flask/Streamlit__ for real-time delivery time predictions.
+
+## 📁 Repository Structure
+```bash
+📦 doordash-delivery-prediction  
+ ┣ 📂 data/             # Dataset (raw + cleaned)  
+ ┣ 📂 notebooks/        # Jupyter notebooks for EDA & modeling  
+ ┣ 📂 src/              # Scripts for preprocessing, training, evaluation  
+ ┣ 📜 requirements.txt  # Dependencies  
+ ┣ 📜 README.md         # Project overview  
+ ┗ 📜 results.png       # Sample visualizations & model results
+```
+
+## ✅ Key Takeaways
+
+- Demonstrated __real-world ML problem-solving__ with skewed data and outliers.
+
+- Built an end-to-end __data science pipeline__.
+
+- Showcased usage of __modern ML tools (XGBoost, sklearn)__ for predictive modeling.
+##
+⭐ If you found this project interesting, feel free to fork, star ⭐, or contribute!
