@@ -1,0 +1,10 @@
+artifact_location: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/0/models/m-edd23f7ba6fd46f98f4a8594b6a93d82/artifacts
+creation_timestamp: 1760387696708
+experiment_id: '0'
+last_updated_timestamp: 1760387704725
+model_id: m-edd23f7ba6fd46f98f4a8594b6a93d82
+model_type: null
+name: linearregression
+source_run_id: 77ffaf046fe041c292615e3d4645943b
+status: 2
+status_message: null
