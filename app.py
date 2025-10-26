@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import joblib
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 # Load the pre-trained model
 with open("models/lightgbm.pkl", 'rb') as f:
@@ -141,6 +142,8 @@ if predict:
 
     # Predict using the pre-trained model
     prediction = model.predict(df)
-    expected_time = datetime.now() + timedelta(seconds=prediction[0])
+    # use IST timezone
+    ist = ZoneInfo("Asia/Kolkata")
+    expected_time = datetime.now(tz=ist) + timedelta(seconds=prediction[0])
     st.success(f"🚚 Predicted Delivery Duration: {prediction[0]:.2f} seconds")
     st.success(f"🚚 Expected Delivery Time: {expected_time.strftime('%I:%M %p')}")
