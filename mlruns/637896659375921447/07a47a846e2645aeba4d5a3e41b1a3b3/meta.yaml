@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/637896659375921447/07a47a846e2645aeba4d5a3e41b1a3b3/artifacts
+end_time: 1761485279157
+entry_point_name: ''
+experiment_id: '637896659375921447'
+lifecycle_stage: active
+run_id: 07a47a846e2645aeba4d5a3e41b1a3b3
+run_name: LinearRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761485268201
+status: 3
+tags: []
+user_id: nareshbhandarkar

@@ -1,0 +1,6 @@
+artifact_location: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/637896659375921447
+creation_time: 1761485267902
+experiment_id: '637896659375921447'
+last_update_time: 1761485267902
+lifecycle_stage: active
+name: doordash_delivery_time_prediction

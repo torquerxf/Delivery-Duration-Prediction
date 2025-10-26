@@ -1,0 +1,10 @@
+artifact_location: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/637896659375921447/models/m-3b296758fc6045a5bcad0f8d971bf0f0/artifacts
+creation_timestamp: 1761485489946
+experiment_id: '637896659375921447'
+last_updated_timestamp: 1761485495390
+model_id: m-3b296758fc6045a5bcad0f8d971bf0f0
+model_type: null
+name: xgboost
+source_run_id: cf16d71afd75498fb6ee0efe30589e0b
+status: 2
+status_message: null

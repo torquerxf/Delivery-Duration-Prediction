@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/637896659375921447/cf16d71afd75498fb6ee0efe30589e0b/artifacts
+end_time: 1761485495414
+entry_point_name: ''
+experiment_id: '637896659375921447'
+lifecycle_stage: active
+run_id: cf16d71afd75498fb6ee0efe30589e0b
+run_name: XGBoost
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761485485707
+status: 3
+tags: []
+user_id: nareshbhandarkar

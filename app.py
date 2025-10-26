@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import pickle
 import joblib
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Load the pre-trained model
 with open("models/lightgbm.pkl", 'rb') as f:
@@ -81,7 +81,7 @@ if predict:
     input_data = pd.DataFrame({
         'market_id': [market_id],
         'store_id': [store_id],
-        'store_primary_category': [store_primary_category],
+        'nan_store_primary_category': [store_primary_category],
         'order_protocol': [order_protocol],
         'total_items': [total_items],
         'subtotal': [subtotal],
@@ -117,16 +117,14 @@ if predict:
     to_logtransform = input_data.drop(columns=[
                                 'market_id',
                                 'store_id',
-                                'store_primary_category',
-                                'order_protocol',
                                 'nan_store_primary_category',
-                                'delivery_duration'
+                                'order_protocol'
                                 ])
     for col in to_logtransform:
         input_data[col] = np.log1p(input_data[col])
 
     # One-hot encode categorical features
-    to_encode = ['market_id', 'store_primary_category', 'order_protocol']
+    to_encode = ['market_id', 'nan_store_primary_category', 'order_protocol']
     encoded = encoder.transform(input_data[to_encode])
     encoded_cols = encoder.get_feature_names_out(to_encode)
     
@@ -139,9 +137,10 @@ if predict:
     encoded_df = pd.DataFrame(encoded, columns=encoded_cols, index=input_data.index)
     df = pd.concat([input_data.drop(columns=to_encode), encoded_df], axis=1)
 
-    df.drop(columns=['store_id', 'store_primary_category'], inplace=True)
+    df.drop(columns=['store_id'], inplace=True)
 
     # Predict using the pre-trained model
     prediction = model.predict(df)
-    predicted_seconds = int(np.expm1(prediction)[0])  # inverse of log
-    st.success(f"Predicted Delivery Time: {predicted_seconds} seconds 🚚")
+    expected_time = datetime.now() + timedelta(seconds=prediction[0])
+    st.success(f"🚚 Predicted Delivery Duration: {prediction[0]:.2f} seconds")
+    st.success(f"🚚 Expected Delivery Time: {expected_time.strftime('%I:%M %p')}")

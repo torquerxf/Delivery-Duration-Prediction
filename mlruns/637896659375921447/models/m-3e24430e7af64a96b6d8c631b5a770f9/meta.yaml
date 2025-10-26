@@ -1,0 +1,10 @@
+artifact_location: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/637896659375921447/models/m-3e24430e7af64a96b6d8c631b5a770f9/artifacts
+creation_timestamp: 1761485499697
+experiment_id: '637896659375921447'
+last_updated_timestamp: 1761485504684
+model_id: m-3e24430e7af64a96b6d8c631b5a770f9
+model_type: null
+name: lightgbm
+source_run_id: e4a7a7e093424acb8a22cc0107192f4b
+status: 2
+status_message: null

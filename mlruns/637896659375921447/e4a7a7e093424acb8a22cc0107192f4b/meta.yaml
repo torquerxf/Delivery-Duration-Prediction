@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/637896659375921447/e4a7a7e093424acb8a22cc0107192f4b/artifacts
+end_time: 1761485504750
+entry_point_name: ''
+experiment_id: '637896659375921447'
+lifecycle_stage: active
+run_id: e4a7a7e093424acb8a22cc0107192f4b
+run_name: LightGBM
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761485495421
+status: 3
+tags: []
+user_id: nareshbhandarkar
