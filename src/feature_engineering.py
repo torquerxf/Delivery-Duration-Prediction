@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
-
+import joblib
 
 def feature_engineering_step(df: pd.DataFrame) -> pd.DataFrame:
     """Perform feature engineering: ratios, encoding, drop collinears
@@ -57,6 +57,10 @@ def feature_engineering_step(df: pd.DataFrame) -> pd.DataFrame:
     to_encode = ['market_id', 'nan_store_primary_category', 'order_protocol']
     encoder = OneHotEncoder(sparse_output=False, dtype=int)
     encoded = encoder.fit_transform(df[to_encode])
+
+    # save the fitted encoder to models/onehot_encoder.joblib
+    joblib.dump(encoder, 'models/onehot_encoder.pkl')
+    
     encoded_cols = encoder.get_feature_names_out(to_encode)
     
     # rename columns for custom prefixes

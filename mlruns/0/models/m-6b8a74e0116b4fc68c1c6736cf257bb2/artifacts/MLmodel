@@ -1,0 +1,22 @@
+artifact_path: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/0/models/m-6b8a74e0116b4fc68c1c6736cf257bb2/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.12
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.4.0
+model_id: m-6b8a74e0116b4fc68c1c6736cf257bb2
+model_size_bytes: 3951
+model_uuid: m-6b8a74e0116b4fc68c1c6736cf257bb2
+prompts: null
+run_id: e2fdc273da2d4341b55f6e86b939e82e
+utc_time_created: '2025-10-26 06:38:46.992084'

@@ -10,7 +10,7 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 
 def train_model(X_train, y_train, X_test, y_test):
-
+    mlflow.set_experiment("doordash_delivery_time_prediction")
     # define models and their params
     models = {
         "LinearRegression": LinearRegression(),

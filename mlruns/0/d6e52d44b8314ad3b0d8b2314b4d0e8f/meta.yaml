@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/0/d6e52d44b8314ad3b0d8b2314b4d0e8f/artifacts
+end_time: 1761460948907
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d6e52d44b8314ad3b0d8b2314b4d0e8f
+run_name: RandomForest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761460736605
+status: 3
+tags: []
+user_id: nareshbhandarkar

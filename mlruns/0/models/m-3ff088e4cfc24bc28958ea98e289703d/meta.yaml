@@ -1,0 +1,10 @@
+artifact_location: file:///Users/nareshbhandarkar/Documents/ml-projects/doordash-delivery/mlruns/0/models/m-3ff088e4cfc24bc28958ea98e289703d/artifacts
+creation_timestamp: 1761460941185
+experiment_id: '0'
+last_updated_timestamp: 1761460948897
+model_id: m-3ff088e4cfc24bc28958ea98e289703d
+model_type: null
+name: randomforest
+source_run_id: d6e52d44b8314ad3b0d8b2314b4d0e8f
+status: 2
+status_message: null
