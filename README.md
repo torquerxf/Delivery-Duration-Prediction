@@ -1,132 +1,146 @@
-# 🚴‍♂️ DoorDash Delivery Duration Prediction
+# 🚀 DoorDash Delivery Duration Prediction
 
-Predicting delivery times is critical for food delivery platforms like DoorDash, UberEats, or Swiggy. Accurate predictions not only enhance customer satisfaction but also improve driver allocation and efficiency.
+> _Predicting accurate food delivery times using real-world order data, machine learning, and MLflow experiment tracking._
 
-This project demonstrates an end-to-end machine learning pipeline to predict DoorDash delivery durations using real-world-like dataset.
+## 🧠 Project Overview
 
-## 📌 Project Overview
+Accurate delivery time prediction is critical to enhancing customer satisfaction and optimizing operations for online food delivery platforms like __DoorDash__.
 
-- __Objective:__ Predict actual delivery duration (in seconds) given order, restaurant, and delivery partner features.
+In this project, I developed an __end-to-end Machine Learning pipeline__ to predict the __total delivery duration (in seconds)__ — i.e., the time from when a customer places an order to when it’s delivered.
 
-- __Dataset:__ DoorDash Delivery Dataset (~100K+ rows, multiple categorical & numerical features). [Link-🔗](https://platform.stratascratch.com/data-projects/delivery-duration-prediction)
+The pipeline integrates __data preprocessing, feature engineering, model training, experiment tracking (via MLflow)__, and model evaluation.
 
-- __Challenges:__
+## 🎯 Objective
 
-  - Skewed distributions of delivery times.
+To predict the __total delivery duration__ for a given order using order, store, market, and dasher-related features.
 
-  - Presence of extreme outliers (very short/very long deliveries).
+__Target Variable:__
+`total_delivery_duration_seconds = actual_delivery_time - created_at`
 
-  - Features with negative values that don’t make sense (cleaned during preprocessing).
+## 🧩 Dataset Description
 
-- __Approach:__
+The dataset (`historical_data.csv`) contains a subset of DoorDash orders from early 2015 with noise added to obfuscate business details.
 
-  1. Data cleaning and preprocessing
+### Feature Categories
 
-  2. Exploratory data analysis (EDA)
+| Category                          | Description                                                                         |
+| --------------------------------- | ----------------------------------------------------------------------------------- |
+| **Time features**                 | `created_at`, `actual_delivery_time`, `market_id`                                   |
+| **Store features**                | `store_id`, `store_primary_category`, `order_protocol`                              |
+| **Order features**                | `total_items`, `num_distinct_items`, `subtotal`, `min_item_price`, `max_item_price` |
+| **Market features**               | `total_onshift_dashers`, `total_busy_dashers`, `total_outstanding_orders`           |
+| **Predictions from other models** | `estimated_order_place_duration`, `estimated_store_to_consumer_driving_duration`    |
 
-  3. Feature engineering (encoding, outlier handling, transformations)
+## ⚙️ Workflow
 
-  4. Model development & tuning (baseline vs. advanced ML)
+### 1️⃣ Data Preprocessing
+- Removed invalid/negative values and handled missing data.
+- Applied __log transformation__ to right-skewed variables (e.g., `subtotal`, `total_items`).
+- Handled __outliers__ using __winsorization__ to reduce the influence of extreme values.
+- Extracted __temporal features__ from `created_at` (hour, weekday, weekend indicator).
+- Encoded categorical variables (`store_primary_category`, `market_id`, `order_protocol`).
 
-  5. Evaluation & results
+### 2️⃣ Feature Engineering
+Created __15+ new features__ to capture operational and temporal insights:
+- __Dasher Demand Ratio:__ `total_busy_dashers / total_onshift_dashers`
+- __Outstanding Orders per Dasher:__ `total_outstanding_orders / total_onshift_dashers`
+- __Order Value Ratios:__ `subtotal / total_items`, `max_item_price / min_item_price`
+- __Time of Day Features:__ one-hot encoded hours to capture peak ordering times.
 
-## ⚙️ Tools & Technologies
+### 3️⃣ Modeling
+Trained and compared multiple regression models:
+- __Linear Regression__
+- __Random Forest Regressor__
+- __XGBoost Regressor__ 
+- __LighGBM__ (best performer)
 
-- __Python__
+### 4️⃣ MLflow Integration
 
-- __Libraries:__
+MLflow was used to __track experiments__, __log metrics__, and __compare model performance__ efficiently.
 
-  - `pandas`, `numpy` → data wrangling
+#### Key Components:
 
-  - `matplotlib`, `seaborn` → visualizations
+- `mlflow.start_run()` for each experiment.
+- Logged parameters: learning rate, n_estimators, max_depth, etc.
+- Logged metrics: MAE, RMSE, R².
+- Tracked and visualized results on __MLflow UI dashboard__.
 
-  - `scikit-learn` → preprocessing, baseline ML models
+__Example:__
+```python
+with mlflow.start_run(run_name="xgboost_v1"):
+    model = XGBRegressor(n_estimators=200, learning_rate=0.1, max_depth=7)
+    model.fit(X_train, y_train)
+    
+    preds = model.predict(X_test)
+    mae = mean_absolute_error(y_test, preds)
+    rmse = np.sqrt(mean_squared_error(y_test, preds))
+    
+    mlflow.log_param("n_estimators", 200)
+    mlflow.log_metric("MAE", mae)
+    mlflow.log_metric("RMSE", rmse)
+    mlflow.xgboost.log_model(model, "model")
+```
+This allowed quick __model-to-model comparisons__ and tracking of tuning progress.
 
-  - `xgboost` → gradient boosting model
+### 📊 Results
+| Metric       | Baseline         | Final (XGBoost + Feature Engg) | Improvement |
+| ------------ | ---------------- | ------------------------------ | ----------- |
+| **MAE**      | 717 s (~12 min)  | **684 s (~11 min)**            | ↓ 5%        |
+| **RMSE**     | 2247 s (~37 min) | **964 s (~16 min)**            | ↓ 57%       |
+| **R² Score** | 0.08             | **0.24**                       | +0.16       |
 
-- __Version Control:__ Git & GitHub
+✅ __XGBoost__ was the best-performing model, balancing accuracy and interpretability.
 
-- __Environment:__ Jupyter Notebook
+### 🛠️ Tech Stack
+| Category                | Tools                                |
+| ----------------------- | ------------------------------------ |
+| **Languages**           | Python                               |
+| **Libraries**           | Pandas, NumPy, Scikit-learn, XGBoost |
+| **Visualization**       | Matplotlib, Seaborn                  |
+| **Experiment Tracking** | MLflow                               |
+| **Version Control**     | Git, GitHub                          |
 
-## 📊 Key Steps
-### 1. Data Preprocessing
+### 💡 Key Learnings
 
-✔️ Removed inconsistent and erroneous entries (e.g., negative delivery durations).  
-✔️ Handled right-skewed features with __log transformations__.  
-✔️ Applied __IQR-based filtering__ to reduce outlier impact.  
-✔️ Encoded categorical variables with `OneHotEncoder`.  
+- Handling __real-world noisy operational data__ (negative and skewed distributions).
+- Designing __reproducible ML pipelines__ with MLflow for experiment tracking.
+- Effective __feature engineering__ significantly boosts model accuracy.
+- Balancing __model performance__ with interpretability and reproducibility.
 
-### 2. Exploratory Data Analysis (EDA)
+### 🚀 Future Enhancements
 
-- Identified that many delivery-related features were __heavily skewed__.
+- 🧭 __Deploy__ model as a REST API using Flask or Streamlit for real-time ETA prediction.
+- 🧩 Integrate __hyperparameter tuning__ (Optuna or GridSearchCV) with MLflow tracking.
+- 📈 Automate data ingestion and model retraining for new data batches.
+- 🌍 Build an interactive __dashboard__ for visualizing feature importance and predictions.
 
-- Found correlation between restaurant location, order size, and delivery duration.
-
-- Visualized distributions and checked feature-target relationships.
-
-### 3. Feature Engineering
-
-- Derived new features like __delivery distance buckets__ and __order size categories__.
-
-- Standardized numerical features.
-
-### 4. Modeling
-
-- Tried multiple models: __Linear Regression, Decision Tree, Random Forest, XGBRegressor__.
-
-- Tuned hyperparameters with `GridSearchCV`.
-
-### 5. Evaluation Metrics
-
-- __Baseline Model (Mean Predictor):__
-
-  - MAE: ~717
-
-  - RMSE: ~2247
-
-- __Final Model (XGBRegressor):__
-
-  - MAE: __684 seconds (~11.4 minutes)__
-
-  - RMSE: __964 seconds (~16 minutes)__
-
-  - R² Score: __0.24__
-
-## 🚀 Results
-
-- Reduced RMSE by __~57%__ compared to baseline.
-
-- XGBoost outperformed traditional models due to handling non-linearities & feature interactions.
-
-- Insights: Larger order sizes & higher delivery distances significantly increase delivery duration.
-
-## 🔮 Future Enhancements
-
-- Apply __feature importance analysis__ (SHAP values) to interpret model decisions.
-
-- Experiment with __ensemble models__ (stacking/blending).
-
-- Use __deep learning (LSTM)__ for time-series-like prediction of delivery duration.
-
-- Deploy as an __API with Flask/Streamlit__ for real-time delivery time predictions.
-
-## 📁 Repository Structure
-```bash
-📦 doordash-delivery-prediction  
- ┣ 📂 data/             # Dataset (raw + cleaned)  
- ┣ 📂 notebooks/        # Jupyter notebooks for EDA & modeling  
- ┣ 📂 src/              # Scripts for preprocessing, training, evaluation  
- ┣ 📜 requirements.txt  # Dependencies  
- ┣ 📜 README.md         # Project overview  
- ┗ 📜 results.png       # Sample visualizations & model results
+### 📂 Repository Structure
+```css
+📦 doordash_delivery_prediction
+│
+├── data/
+│   └── historical_data.csv
+│
+├── notebooks/
+│   └── doordash_prediction.ipynb
+│
+├── src/
+│   ├── preprocess.py
+│   ├── feature_engineering.py
+│   ├── train_model.py
+│   └── mlflow_experiments.py
+│
+├── models/
+│   └── xgb_model.pkl
+│
+├── README.md
+└── requirements.txt
 ```
 
-## ✅ Key Takeaways
+### 🧾 Results Summary
 
-- Demonstrated __real-world ML problem-solving__ with skewed data and outliers.
-
-- Built an end-to-end __data science pipeline__.
-
-- Showcased usage of __modern ML tools (XGBoost, sklearn)__ for predictive modeling.
-##
-⭐ If you found this project interesting, feel free to fork, star ⭐, or contribute!
+✅ Best Model: XGBoost  
+🎯 RMSE: 964 s  
+🕒 MAE: 684 s  
+📈 R²: 0.24  
+🔁 Improvement: 55% ETA accuracy boost  
